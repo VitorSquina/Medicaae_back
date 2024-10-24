@@ -1,17 +1,19 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const cors = require('cors')
-const jwt = require('jsonwebtoken');
-const authRoutes = require('./src/routes/auth.js'); // Importa as rotas de autenticação
+const cors = require('cors');
+const authRoutes = require('./src/auth/routes/authRoutes'); 
+const medicamentoRoutes = require('./src/cadastro/routes/medicamentoRoutes'); 
+
+
 const app = express();
 
 app.use(cors());
 
-// Middleware para ler JSON
 app.use(express.json());
 
-// Rotas de autenticação
-app.use('/auth', authRoutes);  // Define o prefixo de rota como /auth
+app.use('/auth', authRoutes);  
+
+app.use('/medicamentos', medicamentoRoutes);
 
 // Conectar ao MongoDB Atlas
 mongoose.connect('mongodb+srv://vitor122703:dorminhoco@cluster0.sweuj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
