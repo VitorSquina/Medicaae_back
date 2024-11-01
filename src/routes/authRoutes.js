@@ -1,6 +1,6 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const authController = require('../controllers/authcontroller');
+import authController from '../controllers/authcontroller.js';
 
 // Rota de registro
 router.post('/register', authController.register);
@@ -11,4 +11,4 @@ router.post('/login', authController.login);
 // Rota para obter todos os usuários (temporária)
 router.get('/users', authController.getUsers);
 
-module.exports = router;
+export default router;

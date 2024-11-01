@@ -1,10 +1,11 @@
-import { Mongoose } from "mongoose";
+import mongoose from "mongoose";
 
- const EstoqueSchema = new Mongoose.Schema({
-    nome_medicamento: {String, required: true},
-    quantidade: { Number, required: true},
-    dosagem: {String, required: true},
-    observacao: {String}
- })
+const EstoqueSchema = new mongoose.Schema({
+    nome_medicamento: { type: String, required: true },
+    quantidade: { type: Number, required: true },
+    dosagem: { type: String, required: true },
+    observacao: { type: String }
+});
 
- module.exports = mongoose.model('Estoque', EstoqueSchema);
+const Estoque = mongoose.model("Estoque", EstoqueSchema);
+export default Estoque;

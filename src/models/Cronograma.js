@@ -1,13 +1,14 @@
-import { Mongoose } from "mongoose";
+import mongoose from "mongoose";
 
-const CronogramaSchema = new Mongoose.Schema({
-    id: {String, required: true, unique: true},
-    id_paciente: {String, required: true},
-    horario: {String, required: true},
-    intervalo: {String, required: true},
-    duracao: {String, required: true},
-    descricao: {String},
-    status: "Em Andamento",
+const CronogramaSchema = new mongoose.Schema({
+    id: {type: String, required: true, unique: true},
+    id_paciente: {type: String, required: true},
+    horario: {type: String, required: true},
+    intervalo: {type: String, required: true},
+    duracao: {type: String, required: true},
+    descricao: {type: String},
+    status: {type: String},
 })
 
-module.exports = mongoose.model('Cronograma', CronogramaSchema);
+const cronograma = mongoose.model("cronograma", CronogramaSchema);
+export default cronograma;

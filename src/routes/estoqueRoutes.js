@@ -1,11 +1,9 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const estoqueController =  require('../controllers/estoquecontroller.js');
+import estoqueController from '../controllers/estoquecontroller.js';
 
-router.post('/estoque', estoqueController);
-router.get('/estoque/:nome', estoqueController);
-router.get('/estoque/:indicacao', estoqueController);
-router.get('/estoque', estoqueController);
-router.get('/estoque/buscar', estoqueController.buscarEstoque);
+router.post('/estoque', estoqueController.cadastrarEstoque);
+router.get('/estoque/:nome', estoqueController.getEstoquebyName);
+router.get('/estoque', estoqueController.getEstoque);
 
-module.exports = router;
+export default router;

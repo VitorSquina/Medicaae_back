@@ -1,8 +1,8 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const cronogramaController =  require('../controllers/cronogramaController.js');
+import cronogramaController from '../controllers/cronogramaController.js';
 
 router.post('/cronograma', cronogramaController);
 router.get('/cronograma/:status', cronogramaController);
 
-module.exports = router;
+export default router;
