@@ -3,7 +3,6 @@ import Estoque from '../models/Estoque.js';
 class EstoqueController {
     static cadastrarEstoque = async (req, res) => {
         let estoque = new Estoque(req.body);
-        
         try {
             const newEstoque = await estoque.save();
             
