@@ -15,13 +15,13 @@ app.use(json());
 
 app.use('/auth', authRoutes);  
 
-app.use('/medicamentos', medicamentoRoutes);
+app.use('/', medicamentoRoutes);
 
-app.use('/tratamento', tratamentoRoutes);
+app.use('/', tratamentoRoutes);
 
-app.use('/estoque', estoqueRoutes);
+app.use('/', estoqueRoutes);
 
-app.use('/cronograma', cronogramaRoutes);
+app.use('/', cronogramaRoutes);
 
 // Conectar ao MongoDB Atlas
 mongoose.connect('mongodb+srv://vitor122703:dorminhoco@cluster0.sweuj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
