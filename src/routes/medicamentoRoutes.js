@@ -1,6 +1,6 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const medicamentoController = require('../controllers/medicamentocontroller');
+import medicamentoController from '../controllers/medicamentocontroller.js';
 
 router.post('/cadastrar', medicamentoController.cadastrarMedicamento);
 
@@ -8,4 +8,4 @@ router.get('/listar', medicamentoController.listarMedicamentos);
 
 router.delete('/remover/:id', medicamentoController.removerMedicamento);
 
-module.exports = router;
+export default router;

@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true }, // Verifique se está preenchido corretamente
@@ -7,4 +7,5 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
 });
 
-module.exports = mongoose.model('User', userSchema);
+const user = mongoose.model("user", userSchema);
+export default user;
