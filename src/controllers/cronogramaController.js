@@ -1,12 +1,12 @@
 import Cronograma from '../models/Cronograma.js';
 
 class CronogramaController {
-    static cadastrarCronogramas = async (req, res) => {
-        const { id_paciente, horario, intervalo, duracao, descricao, status } = req.body;
+    static cadastrarCronograma = async (req, res) => {
+        let cronograma = new Cronograma(req.body);
         try {
-            const newCronograma = new Cronograma({ id_paciente, horario, intervalo, duracao, descricao, status });
-            await newCronograma.save()
-            res.status(201).json('Cronograma criado com sucesso!', novoCronograma);
+            const newCronograma = await cronograma.save();
+            
+            res.status(201).json(newCronograma.toJSON());
         } catch (error) {
             res.status(500).json({ error: 'Erro no servidor', details: error.message });
         }

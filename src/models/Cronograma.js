@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 
 const CronogramaSchema = new mongoose.Schema({
-    id: {type: String, required: true, unique: true},
     id_paciente: {type: String, required: true},
     horario: {type: String, required: true},
     intervalo: {type: String, required: true},
@@ -10,5 +9,5 @@ const CronogramaSchema = new mongoose.Schema({
     status: {type: String},
 })
 
-const cronograma = mongoose.model("cronograma", CronogramaSchema);
-export default cronograma;
+const Cronograma = mongoose.model("cronograma", CronogramaSchema);
+export default Cronograma;

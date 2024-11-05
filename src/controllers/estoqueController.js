@@ -5,7 +5,6 @@ class EstoqueController {
         let estoque = new Estoque(req.body);
         try {
             const newEstoque = await estoque.save();
-            
             res.status(201).json(newEstoque.toJSON());
         } catch (error) {
             res.status(500).json({ error: 'Erro no servidor', details: error.message });
