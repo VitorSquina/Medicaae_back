@@ -13,9 +13,10 @@ class TratamentoController {
     };
 
     static getTratamentoStatus = async(req, res) => {
+        const id_user = req.query.id_user;
         const  status  = req.query.status;
         try {
-            const tratamentos = await Tratamento.find({"status": status});
+            const tratamentos = await Tratamento.find({"id_user": id_user, "status": status});
             res.status(200).send(tratamentos);
         } catch (error) {
             res.status(500).json({ error: 'Erro no servidor', details: error.message });
