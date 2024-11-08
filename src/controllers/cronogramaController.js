@@ -13,9 +13,10 @@ class CronogramaController {
     };
 
     static getCronogramasStatus = async (req, res) => {
-        const { status } = req.params;
+        const id_user = req.params.id_user;
+        const status = req.params.status;
         try {
-            const cronogramas = await Cronograma.findAll({ status });
+            const cronogramas = await Cronograma.findAll({ "status": status, "id_user": id_user });
             res.status(200).json(cronogramas);
         } catch (error) {
             res.status(500).json({ error: 'Erro no servidor', details: error.message });
