@@ -5,7 +5,6 @@ class CronogramaController {
         let cronograma = new Cronograma(req.body);
         try {
             const newCronograma = await cronograma.save();
-            
             res.status(201).json(newCronograma.toJSON());
         } catch (error) {
             res.status(500).json({ error: 'Erro no servidor', details: error.message });

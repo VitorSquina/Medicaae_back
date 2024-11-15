@@ -79,14 +79,14 @@ class EstoqueController {
             if(medicamento != null){
             //procura um estoque com o nome do medicamento fornecido na query
             const estoque = await Estoque.find({ "nome_medicamento": medicamento });
-            } else {
-                return res.status(400).json({ message: 'O nome do medicamento é obrigatório' });
-            }
             if (estoque != null) {
                 //se for diferente de nulo retorna um estoque
                 res.status(200).json(estoque);
             } else {
-                return res.status(404).json({ message: 'Medicamento não encontrado' });
+                return res.status(404).json({ message: 'Estoque não encontrado' });
+            }
+            } else {
+                return res.status(400).json({ message: 'O nome do medicamento é obrigatório' });
             }
         } catch (erro) {
             if(erro instanceof mongoose.Error.CastError){
