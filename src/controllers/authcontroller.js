@@ -24,7 +24,7 @@ class AuthController {
 
       res.status(201).json({ message: 'Usuário registrado com sucesso' });
     } catch (error) {
-      res.status(500).json({ error: 'Erro no servidor', details: error.message });
+      next(erro)
     }
   };
 
@@ -45,17 +45,17 @@ class AuthController {
 
       res.json({ token });
     } catch (error) {
-      res.status(500).json({ error: 'Erro no servidor wdsfwefewqf', details: error.menssage });
+      next(erro)
     }
   };
 
   // Função para buscar todos os usuários
-  static getUsers = async (req, res) => {
+  static getUsers = async (req, res, next) => {
     try {
       const users = await User.find({}, 'name cpf email');
       res.status(200).json(users);
     } catch (error) {
-      res.status(500).json({ error: 'Erro no servidor ao buscar usuários', details: error.message });
+      next(erro)
     }
   };
 }

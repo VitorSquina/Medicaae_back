@@ -2,7 +2,7 @@ import Estoque from '../models/Estoque.js';
 import mongoose from "mongoose";
 
 class EstoqueController {
-    static cadastrarEstoque = async (req, res) => {
+    static cadastrarEstoque = async (req, res, next) => {
         //salva o body do tipo Estoque em uma variável
         let estoque = new Estoque(req.body);
         try {
@@ -15,15 +15,11 @@ class EstoqueController {
                 res.status(201).json(newEstoque); //retorna o cadastro realizado 
             }
         } catch (erro) {
-            if (erro instanceof mongoose.Error.CastError) {
-                res.status(400).send({ message: "Um ou mais dados forncecidos estão incorretos." })
-            } else {
-                res.status(500).json({ erro: 'Erro interno no servidor', details: erro.message });
-            }
+            next(erro)
         }
     };
 
-    static adicionarEmEstoqueExistente = async (req, res) => {
+    static adicionarEmEstoqueExistente = async (req, res, next) => {
         try {
             const { nome_medicamento, dosagem, quantidade } = req.body;
 
@@ -44,16 +40,12 @@ class EstoqueController {
                 return res.status(201).json({ message: "Novo estoque adicionado com sucesso.", estoque: novoEstoque });
             }
         } catch (erro) {
-            if (erro instanceof mongoose.Error.CastError) {
-                res.status(400).send({ message: "Um ou mais dados forncecidos estão incorretos." })
-            } else {
-                res.status(500).json({ erro: 'Erro interno no servidor', details: erro.message });
-            }
+            next(erro)
         }
     };
 
 
-    static getEstoque = async (req, res) => {
+    static getEstoque = async (req, res, next) => {
         try {
             //pega todos os registros de estoque
             const estoque = await Estoque.find();
@@ -64,15 +56,11 @@ class EstoqueController {
                 res.status(404).json("Não foi possivel listar  os estoques");
             }
         } catch (erro) {
-            if(erro instanceof mongoose.Error.CastError){
-                res.status(400).send({ message: "Um ou mais dados forncecidos estão incorretos."})
-            } else {
-            res.status(500).json({ erro: 'Erro interno no servidor', details: erro.message });
-        }
+            next(erro)
         }
     }
 
-    static getEstoquebyName = async (req, res) => {
+    static getEstoquebyName = async (req, res, next) => {
         //pega uma query com o nome do medicamento
         const medicamento = req.query.nome_medicamento;
         try {
@@ -89,11 +77,7 @@ class EstoqueController {
                 return res.status(400).json({ message: 'O nome do medicamento é obrigatório' });
             }
         } catch (erro) {
-            if(erro instanceof mongoose.Error.CastError){
-                res.status(400).send({ message: "Um ou mais dados forncecidos estão incorretos."})
-            } else {
-            res.status(500).json({ erro: 'Erro interno no servidor', details: erro.message });
-        }
+            next(erro)
         }
     };
 

@@ -1,7 +1,7 @@
 import Medicamento from '../models/Medicamento.js';
 
 class MedicamentoController {
-    static cadastrarMedicamento = async (req, res) => {
+    static cadastrarMedicamento = async (req, res, next) => {
         const { nome, dosagem, descricao } = req.body;
 
         try {
@@ -13,17 +13,17 @@ class MedicamentoController {
 
             await novoMedicamento.save();
             res.status(201).json({ message: 'Medicamento Cadastrado' });
-        } catch (error) {
-            res.status(500).json({ message: 'Erro ao cadastrar', details: error.message });
+        } catch (erro) {
+            next(erro)
         }
     };
 
-    static listarMedicamentos = async (req, res) => {
+    static listarMedicamentos = async (req, res, next) => {
         try {
             const medicamentos = await Medicamento.find({});
             res.status(200).json(medicamentos);
-        } catch (error) {
-            res.status(500).json({ message: 'Erro ao listar Medicamentos', details: error.message });
+        } catch (erro) {
+            next(erro)
         }
     };
 
@@ -34,8 +34,8 @@ class MedicamentoController {
             await Medicamento.findByIdAndDelete(id);
             res.status(200).json({ message: 'Medicamento Removido com sucesso' });
 
-        } catch (error) {
-            res.status(500).json({ error: 'Erro ao remover medicamento', details: error.message })
+        } catch (erro) {
+            next(erro)
         }
     }
 }
