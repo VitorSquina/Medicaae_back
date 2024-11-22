@@ -3,13 +3,11 @@ import jwt from 'jsonwebtoken';
 import { createUser, getUserByEmail, getAllUsers } from '../models/User.js';
 
 class AuthController {
-  // Função de registro
   static register = async (req, res) => {
     const { name, cpf, email, password } = req.body;
 
     console.log("Dados recebidos do front-end:", req.body);
     try {
-      // Verificar se o usuário já existe (baseado no email)
       const existingUser = await getUserByEmail(email);
       if (existingUser) return res.status(400).json({ message: 'Usuário já existe' });
 
@@ -30,19 +28,15 @@ class AuthController {
     }
   };
 
-  // Função de login
   static login = async (req, res) => {
     const { email, password } = req.body;
     try {
-      // Verificar se o usuário existe
       const user = await getUserByEmail(email);
       if (!user) return res.status(400).json({ message: 'Usuário não encontrado' });
 
-      // Verificar se a senha está correta
       const isPasswordValid = await bcrypt.compare(password, user.password);
       if (!isPasswordValid) return res.status(400).json({ message: 'Senha incorreta' });
 
-      // Gerar token JWT
       const token = jwt.sign({ id: user.id }, 'SECRET_KEY', { expiresIn: '1h' });
 
       res.json({ token });

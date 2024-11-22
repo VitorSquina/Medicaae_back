@@ -1,6 +1,5 @@
-import pool from '../../connection.js'; // Importa a conexão com o banco
+import pool from '../../connection.js'; 
 
-// Função para adicionar um novo medicamento
 export const addMedicamento = async (medicamentoData) => {
   const { nome, dosagem, descricao } = medicamentoData;
   try {
@@ -18,7 +17,6 @@ export const addMedicamento = async (medicamentoData) => {
   }
 };
 
-// Função para buscar todos os medicamentos
 export const getAllMedicamentos = async () => {
   try {
     const query = `
@@ -32,7 +30,6 @@ export const getAllMedicamentos = async () => {
   }
 };
 
-// Função para buscar um medicamento pelo nome
 export const getMedicamentoByNome = async (nome) => {
   try {
     const query = `
@@ -46,7 +43,6 @@ export const getMedicamentoByNome = async (nome) => {
   }
 };
 
-// Função para atualizar um medicamento
 export const updateMedicamento = async (id, updates) => {
   const { nome, dosagem, descricao } = updates;
   try {
@@ -65,7 +61,6 @@ export const updateMedicamento = async (id, updates) => {
   }
 };
 
-// Função para remover um medicamento
 export const deleteMedicamento = async (id) => {
   try {
     const query = `
