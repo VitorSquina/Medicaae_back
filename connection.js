@@ -6,7 +6,7 @@ const pool = new Pool({
     database: 'medicaae',
     port: 5432,
     user: 'postgres',
-    password: 'postgres',
+    password: '1722',
 });
 
 export default pool;
