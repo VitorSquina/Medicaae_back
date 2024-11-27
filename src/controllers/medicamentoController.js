@@ -46,9 +46,9 @@ class MedicamentoController {
   };
 
   static deletarMedicamento = async (req, res) => {
-    const { id } = req.params;
+    const { id_med } = req.params;
     try {
-      const medicamentoRemovido = await deleteMedicamento(id);
+      const medicamentoRemovido = await deleteMedicamento(id_med);
       if (!medicamentoRemovido) return res.status(404).json({ message: 'Medicamento não encontrado' });
 
       res.status(200).json({ message: 'Medicamento removido com sucesso!', data: medicamentoRemovido });

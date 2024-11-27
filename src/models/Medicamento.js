@@ -61,12 +61,12 @@ export const updateMedicamento = async (id_med, updates) => {
   }
 };
 
-export const deleteMedicamento = async (id) => {
+export const deleteMedicamento = async (id_med) => {
   try {
     const query = `
-      DELETE FROM medicamento WHERE id = $1 RETURNING *;
+      DELETE FROM medicamento WHERE id_med = $1 RETURNING *;
     `;
-    const result = await pool.query(query, [id]);
+    const result = await pool.query(query, [id_med]);
     return result.rows[0];
   } catch (error) {
     console.error('Erro ao remover medicamento:', error);
