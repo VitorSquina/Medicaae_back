@@ -43,16 +43,16 @@ export const getMedicamentoByNome = async (nome) => {
   }
 };
 
-export const updateMedicamento = async (id, updates) => {
-  const { nome, dosagem, descricao } = updates;
+export const updateMedicamento = async (id_med, updates) => {
+  const { nome, dose, descricao } = updates;
   try {
     const query = `
       UPDATE medicamento
-      SET nome = $1, dosagem = $2, descricao = $3
-      WHERE id = $4
+      SET nome = $1, dose = $2, descricao = $3
+      WHERE id_med = $4
       RETURNING *;
     `;
-    const values = [nome, dosagem, descricao, id];
+    const values = [nome, dose, descricao, id_med];
     const result = await pool.query(query, values);
     return result.rows[0];
   } catch (error) {

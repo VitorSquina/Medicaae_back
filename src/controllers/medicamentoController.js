@@ -33,10 +33,10 @@ class MedicamentoController {
   };
 
   static atualizarMedicamento = async (req, res) => {
-    const { id } = req.params;
+    const { id_med } = req.params;
     const updates = req.body;
     try {
-      const medicamentoAtualizado = await updateMedicamento(id, updates);
+      const medicamentoAtualizado = await updateMedicamento(id_med, updates);
       if (!medicamentoAtualizado) return res.status(404).json({ message: 'Medicamento não encontrado' });
 
       res.status(200).json({ message: 'Medicamento atualizado com sucesso!', data: medicamentoAtualizado });
