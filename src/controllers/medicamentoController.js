@@ -2,9 +2,9 @@ import { addMedicamento, getAllMedicamentos, getMedicamentoByNome, updateMedicam
 
 class MedicamentoController {
   static adicionarMedicamento = async (req, res) => {
-    const { nome, dosagem, descricao } = req.body;
+    const { nome, dose, descricao, tipo } = req.body;
     try {
-      const novoMedicamento = await addMedicamento({ nome, dosagem, descricao });
+      const novoMedicamento = await addMedicamento({ nome, dose, descricao, tipo });
       res.status(201).json({ message: 'Medicamento adicionado com sucesso!', data: novoMedicamento });
     } catch (error) {
       res.status(500).json({ error: 'Erro no servidor', details: error.message });
