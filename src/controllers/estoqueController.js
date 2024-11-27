@@ -2,9 +2,9 @@ import { addEstoque, getEstoqueByNome, getAllEstoque } from '../models/Estoque.j
 
 const estoqueController = {
   cadastrarEstoque: async (req, res) => {
-    const { nome_medicamento, quantidade, dosagem, observacao } = req.body;
+    const { qtdMedicamento, idMed } = req.body;
     try {
-      const novoEstoque = await addEstoque({ nome_medicamento, quantidade, dosagem, observacao });
+      const novoEstoque = await addEstoque({ qtdMedicamento, idMed });
       res.status(201).json({ message: 'Item adicionado ao estoque com sucesso!', data: novoEstoque });
     } catch (error) {
       res.status(500).json({ error: 'Erro ao adicionar item ao estoque', details: error.message });
