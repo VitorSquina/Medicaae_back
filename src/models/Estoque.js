@@ -1,14 +1,14 @@
 import pool from '../../connection.js'; // Importa a conexão com o banco
 
 export const addEstoque = async (estoqueData) => {
-  const { nome_medicamento, quantidade, dosagem, observacao } = estoqueData;
+  const { qtdMedicamento, idMed} = estoqueData;
   try {
     const query = `
-      INSERT INTO estoque (nome_medicamento, quantidade, dosagem, observacao)
-      VALUES ($1, $2, $3, $4)
+      INSERT INTO estoque (qtdMedicamento, idMed)
+      VALUES ($1, $2)
       RETURNING *;
     `;
-    const values = [nome_medicamento, quantidade, dosagem, observacao];
+    const values = [qtdMedicamento, idMed];
     const result = await pool.query(query, values);
     return result.rows[0];
   } catch (error) {

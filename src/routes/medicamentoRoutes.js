@@ -7,7 +7,7 @@ router.post('/', MedicamentoController.adicionarMedicamento);
 router.get('/', MedicamentoController.listarMedicamentos);
 
 router.get('/:nome', MedicamentoController.buscarPorNome);
-router.put('/:id', MedicamentoController.atualizarMedicamento);
-router.delete('/:id', MedicamentoController.deletarMedicamento);
+router.put('/:id_med', MedicamentoController.atualizarMedicamento);
+router.delete('/:id_med', MedicamentoController.deletarMedicamento);
 
 export default router;

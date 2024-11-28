@@ -2,9 +2,9 @@ import { addMedicamento, getAllMedicamentos, getMedicamentoByNome, updateMedicam
 
 class MedicamentoController {
   static adicionarMedicamento = async (req, res) => {
-    const { nome, dosagem, descricao } = req.body;
+    const { nome, dose, descricao, tipo } = req.body;
     try {
-      const novoMedicamento = await addMedicamento({ nome, dosagem, descricao });
+      const novoMedicamento = await addMedicamento({ nome, dose, descricao, tipo });
       res.status(201).json({ message: 'Medicamento adicionado com sucesso!', data: novoMedicamento });
     } catch (error) {
       res.status(500).json({ error: 'Erro no servidor', details: error.message });
@@ -33,10 +33,10 @@ class MedicamentoController {
   };
 
   static atualizarMedicamento = async (req, res) => {
-    const { id } = req.params;
+    const { id_med } = req.params;
     const updates = req.body;
     try {
-      const medicamentoAtualizado = await updateMedicamento(id, updates);
+      const medicamentoAtualizado = await updateMedicamento(id_med, updates);
       if (!medicamentoAtualizado) return res.status(404).json({ message: 'Medicamento não encontrado' });
 
       res.status(200).json({ message: 'Medicamento atualizado com sucesso!', data: medicamentoAtualizado });
@@ -46,9 +46,9 @@ class MedicamentoController {
   };
 
   static deletarMedicamento = async (req, res) => {
-    const { id } = req.params;
+    const { id_med } = req.params;
     try {
-      const medicamentoRemovido = await deleteMedicamento(id);
+      const medicamentoRemovido = await deleteMedicamento(id_med);
       if (!medicamentoRemovido) return res.status(404).json({ message: 'Medicamento não encontrado' });
 
       res.status(200).json({ message: 'Medicamento removido com sucesso!', data: medicamentoRemovido });

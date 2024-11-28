@@ -1,14 +1,14 @@
 import pool from '../../connection.js'; 
 
 export const addMedicamento = async (medicamentoData) => {
-  const { nome, dosagem, descricao } = medicamentoData;
+  const { nome, dose, descricao, tipo } = medicamentoData;
   try {
     const query = `
-      INSERT INTO medicamento (nome, dosagem, descricao)
-      VALUES ($1, $2, $3)
+      INSERT INTO medicamento (nome, dose, descricao, tipo)
+      VALUES ($1, $2, $3, $4)
       RETURNING *;
     `;
-    const values = [nome, dosagem, descricao];
+    const values = [nome, dose, descricao, tipo];
     const result = await pool.query(query, values);
     return result.rows[0];
   } catch (error) {
@@ -43,16 +43,16 @@ export const getMedicamentoByNome = async (nome) => {
   }
 };
 
-export const updateMedicamento = async (id, updates) => {
-  const { nome, dosagem, descricao } = updates;
+export const updateMedicamento = async (id_med, updates) => {
+  const { nome, dose, descricao } = updates;
   try {
     const query = `
       UPDATE medicamento
-      SET nome = $1, dosagem = $2, descricao = $3
-      WHERE id = $4
+      SET nome = $1, dose = $2, descricao = $3
+      WHERE id_med = $4
       RETURNING *;
     `;
-    const values = [nome, dosagem, descricao, id];
+    const values = [nome, dose, descricao, id_med];
     const result = await pool.query(query, values);
     return result.rows[0];
   } catch (error) {
@@ -61,12 +61,12 @@ export const updateMedicamento = async (id, updates) => {
   }
 };
 
-export const deleteMedicamento = async (id) => {
+export const deleteMedicamento = async (id_med) => {
   try {
     const query = `
-      DELETE FROM medicamento WHERE id = $1 RETURNING *;
+      DELETE FROM medicamento WHERE id_med = $1 RETURNING *;
     `;
-    const result = await pool.query(query, [id]);
+    const result = await pool.query(query, [id_med]);
     return result.rows[0];
   } catch (error) {
     console.error('Erro ao remover medicamento:', error);
