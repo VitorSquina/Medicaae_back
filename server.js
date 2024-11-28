@@ -5,6 +5,7 @@ import tratamentoRoutes from './src/routes/tratamentoRoutes.js';
 import estoqueRoutes from './src/routes/estoqueRoutes.js';  
 import cronogramaRoutes from './src/routes/cronogramaRoutes.js'; 
 import medicamentoRoutes from './src/routes/medicamentoRoutes.js';
+import pacienteRoutes from './src/routes/pacienteRoutes.js';
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use('/estoque', estoqueRoutes);
 
 app.use('/cronograma', cronogramaRoutes);
 
+app.use('/paciente', pacienteRoutes)
 
 app.get('/', (req, res) => {
   res.send('Servidor está rodando!');
