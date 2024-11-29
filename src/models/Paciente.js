@@ -17,12 +17,12 @@ export const createPaciente = async (cronogramaData) => {
     }
   };
 
-  export const getAllPacientes = async () => {
+  export const getAllPacientes = async (id_user) => {
     try {
       const query = `
-        SELECT * FROM paciente;
+        SELECT * FROM paciente WHERE id_user = $1;
       `;
-      const result = await pool.query(query);
+      const result = await pool.query(query, [id_user]);
       return result.rows;
     } catch (error) {
       console.error('Erro ao buscar pacientes:', error);
@@ -30,12 +30,12 @@ export const createPaciente = async (cronogramaData) => {
     }
   };
 
-  export const getPacienteById = async (id_paciente) => {
+  export const getPacienteById = async (id_paciente, id_user) => {
     try {
       const query = `
-        SELECT * FROM paciente WHERE id_paciente = $1;
+        SELECT * FROM paciente WHERE id_paciente = $1 AND id_user = $2;
       `;
-      const result = await pool.query(query, [id_paciente]);
+      const result = await pool.query(query, [id_paciente, id_user]);
       return result.rows[0];
     } catch (error) {
       console.error('Erro ao buscar paciente:', error);

@@ -12,8 +12,9 @@ class PacienteController {
   };
 
   static listarPacientes = async (req, res) => {
+    const {id_user} = req.body
     try {
-      const Pacientes = await getAllPacientes();
+      const Pacientes = await getAllPacientes(id_user);
       res.status(200).json(Pacientes);
     } catch (error) {
       res.status(500).json({ error: 'Erro no servidor', details: error.message });

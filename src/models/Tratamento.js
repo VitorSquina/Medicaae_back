@@ -4,7 +4,7 @@ export const createTratamento = async (tratamentoData) => {
   const { nome_paciente, medicamento, dosagem, observacao, status } = tratamentoData;
   try {
     const query = `
-      INSERT INTO tratamentos (nome_paciente, medicamento, dosagem, observacao, status)
+      INSERT INTO tratamentos (nome_paciente, medicamento, dosagem, observacao, status) 
       VALUES ($1, $2, $3, $4, $5)
       RETURNING *;
     `;
@@ -17,10 +17,10 @@ export const createTratamento = async (tratamentoData) => {
   }
 };
 
-export const getTratamentosByStatus = async (status) => {
+export const getTratamentosByStatus = async (status, id_paciente) => {
   try {
     const query = `
-      SELECT * FROM tratamentos WHERE status = $1;
+      SELECT * FROM tratamentos WHERE status = $1 AND id_paciente = $2;
     `;
     const result = await pool.query(query, [status]);
     return result.rows;
