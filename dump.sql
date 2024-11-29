@@ -8,21 +8,19 @@ CREATE TABLE users (
   password VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS paciente (
+  CREATE TABLE IF NOT EXISTS paciente (
     id_user NOT NULL,
     idPaciente SERIAL NOT NULL,
     nomePaciente VARCHAR(45) NOT NULL,
     idadePaciente INT NOT NULL,
-    genero BOOLEAN NOT NULL,
+    genero VARCHAR(9) NOT NULL,
     numContato INT,
     cpf VARCHAR(45),
     alergia VARCHAR(100),
     statusAlta BOOLEAN,
-	idtratamento INT,
     PRIMARY KEY (idPaciente),
 	CONSTRAINT fk_tratamento_has_paciente
 		FOREIGN KEY (id_user) REFERENCES users(id)
-        FOREIGN KEY (idtratamento) REFERENCES tratamento(id_tratamento)
 );
 
 CREATE TABLE IF NOT EXISTS medicamento (
