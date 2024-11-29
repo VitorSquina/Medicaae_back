@@ -1,29 +1,15 @@
 create database medicaae;
 
-CREATE TABLE IF NOT EXISTS medicamento (
-    id_med SERIAL NOT NULL,
-    nome VARCHAR(100) NOT NULL,
-    dose VARCHAR(45) NOT NULL,
-	descricao VARCHAR(145),
-    tipo BOOLEAN NOT NULL,
-    PRIMARY KEY (id_med)
-);
-
-CREATE TABLE IF NOT EXISTS tratamento (
-    id_tratamento SERIAL NOT NULL,
-	dosagem INT NOT NULL,
-	hora_admin TIMESTAMP NOT NULL,
-	intervalo TIMESTAMP NOT NULL,
-	duracao INT NOT NULL,
-	nomeMed VARCHAR(145),
-	descricao VARCHAR(145),
-	idmed INT,
-	PRIMARY KEY (id_tratamento),
-	CONSTRAINT fk_tratamentp_has_medicamento
-		FOREIGN KEY (idmed) REFERENCES medicamento(id_med)
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  cpf VARCHAR(11) NOT NULL UNIQUE,
+  email VARCHAR(255) NOT NULL UNIQUE,
+  password VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS paciente (
+    id_user NOT NULL,
     idPaciente SERIAL NOT NULL,
     nomePaciente VARCHAR(45) NOT NULL,
     idadePaciente INT NOT NULL,
@@ -35,37 +21,49 @@ CREATE TABLE IF NOT EXISTS paciente (
 	idtratamento INT,
     PRIMARY KEY (idPaciente),
 	CONSTRAINT fk_tratamento_has_paciente
-		FOREIGN KEY (idtratamento) REFERENCES tratamento(id_tratamento)
+		FOREIGN KEY (id_user) REFERENCES users(id)
+        FOREIGN KEY (idtratamento) REFERENCES tratamento(id_tratamento)
 );
 
-CREATE TABLE IF NOT EXISTS usuario (
-    idUsuario SERIAL NOT NULL,
-    email VARCHAR(45) NOT NULL,
-	senha VARCHAR(45),
-	nomeUsuario VARCHAR(45) NOT NULL,
-    PRIMARY KEY (idUsuario)
+CREATE TABLE IF NOT EXISTS medicamento (
+    id_med SERIAL NOT NULL,
+    nome VARCHAR(100) NOT NULL,
+    dose VARCHAR(45) NOT NULL,
+	descricao VARCHAR(145),
+    qtdMedicamento INT NOT NULL DEFAULT '1',
+    PRIMARY KEY (id_med)
 );
 
-CREATE TABLE IF NOT EXISTS estoque (
-	idEstoque SERIAL NOT NULL,
-	qtdMedicamento INT NOT NULL DEFAULT '1',
-	idMed INT,
-	PRIMARY KEY (idEstoque)
+CREATE TABLE IF NOT EXISTS tratamento (
+    id_tratamento SERIAL PRIMARY KEY,
+    id_paciente VARCHAR(255) NOT NULL,
+    id_medicamento VARCHAR(255) NOT NULL,
+    nome_paciente VARCHAR(255) NOT NULL,
+    dosagem VARCHAR(255) NOT NULL,
+    intervalo VARCHAR(255) NOT NULL,
+    data_inicial DATE NOT NULL,
+    duracao VARCHAR(255),
+    data_final DATE NOT NULL,
+    observacao TEXT,
+    status VARCHAR(255) NOT NULL,
+    CONSTRAINT fk_user FOREIGN KEY (id_paciente) REFERENCES paciente(idadePaciente),  
+    CONSTRAINT fk_medicamento FOREIGN KEY (id_medicamento) REFERENCES medicamentos(id)
+);
+
+CREATE TABLE IF NOT EXISTS cronograma (
+    id_tratamento NOT NULL,
+    id SERIAL PRIMARY KEY,
+    id_paciente VARCHAR(255) NOT NULL,
+    horario VARCHAR(255) NOT NULL,
+    descricao TEXT,
+    status VARCHAR(255) NOT NULL
+    CONSTRAINT fk_cronograma_has_tratamento
+    FOREIGN KEY (id_tratamento) REFERENCES tratamento(id_tratamento)
 );
 
 CREATE TABLE IF NOT EXISTS novidades (
 	email VARCHAR(100)
 );
-
-CREATE TABLE users (
-  id SERIAL PRIMARY KEY,
-  name VARCHAR(255) NOT NULL,
-  cpf VARCHAR(11) NOT NULL UNIQUE,
-  email VARCHAR(255) NOT NULL UNIQUE,
-  password VARCHAR(255) NOT NULL
-);
-
-
 
 //INSERTS
 
