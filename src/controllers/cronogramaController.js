@@ -1,10 +1,7 @@
-import {
-    createCronograma,
-    getAllCronogramas,
-    getCronogramasByPaciente,
-    updateCronograma,
-    deleteCronograma,
+import {createCronograma,getAllCronogramas,getCronogramasByPaciente,updateCronograma, deleteCronograma,
   } from '../models/Cronograma.js';
+import { getTratamentoById } from '../models/Tratamento.js';
+import { getPacienteById } from '../models/Paciente.js';
   
   class CronogramaController {
     static criarCronograma = async (req, res) => {
@@ -18,26 +15,48 @@ import {
       }
     };
   
-    static listarCronogramas = async (req, res) => {
-      try {
-        const cronogramas = await getAllCronogramas();
-        res.status(200).json(cronogramas);
-      } catch (error) {
-        console.error('Erro ao listar cronogramas:', error);
-        res.status(500).json({ error: 'Erro no servidor', details: error.message });
+    static listarCronogramas = async (req, res) => { // OK
+      const {id_tratamento, id_user} = req.body
+      const tratamento = await getTratamentoById(id_tratamento)
+      if(tratamento !== null) {
+        const paciente = await getPacienteById(tratamento.id_paciente, id_user),
+        if(paciente !== null) {
+          try {
+            const cronogramas = await getAllCronogramas(id_tratamento);
+            res.status(200).json(cronogramas);
+          } catch (error) {
+            console.error('Erro ao listar cronogramas:', error);
+            res.status(500).json({ error: 'Erro no servidor', details: error.message });
+          }
+        } else {
+          res.status(400).json({ error: 'Paciente não encontrado', details: error.message });
+        };      
+        } else {
+          res.status(400).json({ error: 'Tratamento não encontrado', details: error.message });
+        }
       }
-    };
+    
   
     static buscarPorPaciente = async (req, res) => {
-      const { id_paciente } = req.params;
+      const {id_tratamento, id_user} = req.body
+      const tratamento = await getTratamentoById(id_tratamento)
+      if(tratamento !== null) {
+        const paciente = await getPacienteById(tratamento.id_paciente, id_user),
+        if(paciente !== null) {
       try {
-        const cronogramas = await getCronogramasByPaciente(id_paciente);
+        const cronogramas = await getCronogramasByPaciente(paciente.id_paciente);
         res.status(200).json(cronogramas);
       } catch (error) {
         console.error('Erro ao buscar cronogramas:', error);
         res.status(500).json({ error: 'Erro no servidor', details: error.message });
       }
-    };
+    } else {
+      res.status(400).json({ error: 'Paciente não encontrado', details: error.message });
+    };      
+    } else {
+      res.status(400).json({ error: 'Tratamento não encontrado', details: error.message });
+    }
+  };
   
     static atualizarCronograma = async (req, res) => {
       const { id } = req.params;

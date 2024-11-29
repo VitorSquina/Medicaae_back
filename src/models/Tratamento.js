@@ -22,10 +22,23 @@ export const getTratamentosByStatus = async (status, id_paciente) => {
     const query = `
       SELECT * FROM tratamentos WHERE status = $1 AND id_paciente = $2;
     `;
-    const result = await pool.query(query, [status]);
+    const result = await pool.query(query, [status, id_paciente]);
     return result.rows;
   } catch (error) {
     console.error('Erro ao buscar tratamentos pelo status:', error);
+    throw error;
+  }
+};
+
+export const getTratamentoById = async (id_tratamento) => {
+  try {
+    const query = `
+      SELECT * FROM medicamento WHERE id_tratamento = $1;
+    `;
+    const result = await pool.query(query, [id_tratamento]);
+    return result.rows;
+  } catch (error) {
+    console.error('Erro ao buscar medicamentos:', error);
     throw error;
   }
 };

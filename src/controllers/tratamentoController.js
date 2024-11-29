@@ -3,7 +3,7 @@ import { createTratamento, getTratamentosByStatus } from '../models/Tratamento.j
 
 class TratamentoController {
 
-    static cadastrarTratamento = async (req, res) => {
+  static cadastrarTratamento = async (req, res) => {
     const { nome_paciente, medicamento, dosagem, observacao, status = "Em andamento" } = req.body;
     try {
       const newTratamento = await createTratamento({ nome_paciente, medicamento, dosagem, observacao, status });
@@ -16,9 +16,9 @@ class TratamentoController {
 
   static getTratamentoStatus = async (req, res) => {
     const { status } = req.params;
-    const {id_paciente, id_user} = req.body;
+    const { id_paciente, id_user } = req.body;
     const pacienteExiste = await getPacienteById(id_paciente, id_user)
-    if(pacienteExiste){
+    if (pacienteExiste) {
       try {
         const tratamentos = await getTratamentosByStatus(status, id_paciente);
         res.status(200).json(tratamentos);
@@ -29,7 +29,23 @@ class TratamentoController {
     } else {
       res.status(400).json({ error: 'Paciente não encontrado', details: error.message });
     };
+  }
+
+  static getAllTratamentos = async (req, res) => {
+    const { id_paciente, id_user } = req.body;
+    const pacienteExiste = await getPacienteById(id_paciente, id_user)
+    if (pacienteExiste) {
+      try {
+        const tratamentos = await getAlltratamentos(id_paciente);
+        res.status(200).json(tratamentos);
+      } catch (error) {
+        res.status(500).json({ error: 'Erro no servidor', details: error.message });
+      }
+    } else {
+      res.status(400).json({ error: 'Paciente não encontrado', details: error.message });
     }
-}
+    };
+  }
+
 
 export default TratamentoController;
