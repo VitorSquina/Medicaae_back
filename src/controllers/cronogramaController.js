@@ -19,7 +19,7 @@ import { getPacienteById } from '../models/Paciente.js';
       const {id_tratamento, id_user} = req.body
       const tratamento = await getTratamentoById(id_tratamento)
       if(tratamento !== null) {
-        const paciente = await getPacienteById(tratamento.id_paciente, id_user),
+        const paciente = await getPacienteById(tratamento.id_paciente, id_user)
         if(paciente !== null) {
           try {
             const cronogramas = await getAllCronogramas(id_tratamento);
