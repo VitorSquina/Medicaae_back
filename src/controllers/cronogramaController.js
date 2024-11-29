@@ -36,27 +36,29 @@ import { getPacienteById } from '../models/Paciente.js';
         }
       }
     
-  
-    static buscarPorPaciente = async (req, res) => {
-      const {id_tratamento, id_user} = req.body
-      const tratamento = await getTratamentoById(id_tratamento)
-      if(tratamento !== null) {
-        const paciente = await getPacienteById(tratamento.id_paciente, id_user),
-        if(paciente !== null) {
-      try {
-        const cronogramas = await getCronogramasByPaciente(paciente.id_paciente);
-        res.status(200).json(cronogramas);
-      } catch (error) {
+static buscarPorPaciente = async (req, res) => {
+    const { id_tratamento, id_user } = req.body;
+    
+    try {
+        const tratamento = await getTratamentoById(id_tratamento);
+        
+        if (tratamento !== null) {
+            const paciente = await getPacienteById(tratamento.id_paciente, id_user);
+            
+            if (paciente !== null) {
+                const cronogramas = await getCronogramasByPaciente(paciente.id_paciente);
+                res.status(200).json(cronogramas);
+            } else {
+                res.status(400).json({ error: 'Paciente não encontrado', details: 'Paciente não encontrado para o id_user informado.' });
+            }
+        } else {
+            res.status(400).json({ error: 'Tratamento não encontrado', details: 'Tratamento não encontrado para o id_tratamento informado.' });
+        }
+    } catch (error) {
         console.error('Erro ao buscar cronogramas:', error);
         res.status(500).json({ error: 'Erro no servidor', details: error.message });
-      }
-    } else {
-      res.status(400).json({ error: 'Paciente não encontrado', details: error.message });
-    };      
-    } else {
-      res.status(400).json({ error: 'Tratamento não encontrado', details: error.message });
     }
-  };
+};
   
     static atualizarCronograma = async (req, res) => {
       const { id } = req.params;

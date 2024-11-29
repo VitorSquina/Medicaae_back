@@ -1,4 +1,4 @@
-import pool from "../../connection";
+import pool from '../../connection.js';
 
 export const createPaciente = async (cronogramaData) => {
     const { id_user, nomePaciente, idadePaciente, genero, numContato, cpf, alergia, statusAlta } = cronogramaData;
