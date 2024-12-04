@@ -57,7 +57,7 @@ export const createPaciente = async (cronogramaData) => {
   };
 
   export const updatePaciente = async (idPaciente, updates) => {
-    const { id_user, nomePaciente, idadePaciente, genero, numContato, cpf, alergia, statusAlta } = updates;
+    const { id_user, nomePaciente, idadePaciente, genero, numContato, cpf, alergia, statusAlta} = updates;
     try {
         const query = `
             UPDATE paciente
@@ -78,7 +78,7 @@ export const createPaciente = async (cronogramaData) => {
 export const deletePaciente = async (id_paciente) => {
     try {
       const query = `
-        DELETE FROM paciente WHERE id_paciente = $1 RETURNING *;
+        DELETE FROM paciente WHERE idPaciente = $1 RETURNING *;
       `;
       const result = await pool.query(query, [id_paciente]);
       return result.rows[0];

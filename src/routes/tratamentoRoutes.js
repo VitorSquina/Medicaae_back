@@ -2,7 +2,9 @@ import express from "express";
 const router = express.Router();
 import tratamentoController from '../controllers/tratamentoController.js';
 
-router.post('/tratamento/cadastrar', tratamentoController.cadastrarTratamento);
-router.get('/tratamento/:id', tratamentoController.getTratamentoStatus);
+router.post('/', tratamentoController.cadastrarTratamento);
+router.get('/status', tratamentoController.getTratamentoStatus);
+router.get('/all', tratamentoController.getAllTratamentos);
+router.patch('/update/:id_tratamento', tratamentoController.updateTratamento);
 
 export default router;
