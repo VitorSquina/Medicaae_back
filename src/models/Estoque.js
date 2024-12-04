@@ -1,14 +1,14 @@
 import pool from '../../connection.js'; // Importa a conexão com o banco
 
 export const addEstoque = async (estoqueData) => {
-  const { qtdMedicamento, idMed} = estoqueData;
+  const { qtdMedicamento, idMed, id_user } = estoqueData;
   try {
     const query = `
-      INSERT INTO estoque (qtdMedicamento, idMed)
-      VALUES ($1, $2)
+      INSERT INTO estoque (qtdMedicamento, idMed, id_user)
+      VALUES ($1, $2, $3)
       RETURNING *;
     `;
-    const values = [qtdMedicamento, idMed];
+    const values = [qtdMedicamento, idMed, id_user];
     const result = await pool.query(query, values);
     return result.rows[0];
   } catch (error) {
@@ -17,12 +17,12 @@ export const addEstoque = async (estoqueData) => {
   }
 };
 
-export const getAllEstoque = async () => {
+export const getAllEstoque = async (id_user) => {
   try {
     const query = `
-      SELECT * FROM estoque;
+      SELECT * FROM estoque WHERE id_user = $1;
     `;
-    const result = await pool.query(query);
+    const result = await pool.query(query, [id_user]);
     return result.rows;
   } catch (error) {
     console.error('Erro ao buscar estoque:', error);
@@ -30,25 +30,45 @@ export const getAllEstoque = async () => {
   }
 };
 
-export const getEstoqueByNome = async (nome_medicamento) => {
+export const getEstoqueByNome = async (nome_medicamento, id_user) => {
   try {
     const query = `
-      SELECT * FROM estoque WHERE nome_medicamento = $1;
+      SELECT m.nome, e.idEstoque, e.qtdMedicamento
+      FROM estoque e
+      JOIN medicamento m ON e.idMed = m.id_med
+      WHERE m.nome ILIKE $1  
+        AND e.id_user = $2; 
     `;
-    const result = await pool.query(query, [nome_medicamento]);
-    return result.rows[0];
+    
+    const result = await pool.query(query, [`%${nome_medicamento}%`, id_user]);
+    return result.rows; 
   } catch (error) {
     console.error('Erro ao buscar estoque pelo nome do medicamento:', error);
     throw error;
   }
 };
 
-export const updateQuantidade = async (id, quantidade) => {
+
+export const updateQuantidade = async (idMed, qtdMedicamento, id_user) => {
+  // Validação simples dos parâmetros
+  if (!Number.isInteger(qtdMedicamento) || qtdMedicamento <= 0) {
+    throw new Error('Quantidade inválida');
+  }
+  if (!Number.isInteger(idMed) || !Number.isInteger(id_user)) {
+    throw new Error('IDs inválidos');
+  }
+
   try {
     const query = `
-      UPDATE estoque SET quantidade = $1 WHERE id = $2 RETURNING *;
-    `;
-    const result = await pool.query(query, [quantidade, id]);
+  UPDATE estoque 
+  SET qtdMedicamento = qtdMedicamento + $1
+  WHERE idMed = $2 AND id_user = $3 
+  RETURNING *;
+`;
+    const result = await pool.query(query, [qtdMedicamento, idMed, id_user]);
+    if (result.rows.length === 0) {
+      throw new Error('Estoque não encontrado para os IDs fornecidos');
+    }
     return result.rows[0];
   } catch (error) {
     console.error('Erro ao atualizar a quantidade do estoque:', error);
@@ -56,15 +76,15 @@ export const updateQuantidade = async (id, quantidade) => {
   }
 };
 
-export const deleteEstoque = async (id) => {
-  try {
-    const query = `
-      DELETE FROM estoque WHERE id = $1 RETURNING *;
-    `;
-    const result = await pool.query(query, [id]);
-    return result.rows[0];
-  } catch (error) {
-    console.error('Erro ao deletar estoque:', error);
-    throw error;
-  }
-};
+// export const deleteEstoque = async (id, id_user) => {
+//   try {
+//     const query = `
+//       DELETE FROM estoque WHERE id = $1 AND id_user = $2 RETURNING *;
+//     `;
+//     const result = await pool.query(query, [id, id_user]);
+//     return result.rows[0];
+//   } catch (error) {
+//     console.error('Erro ao deletar estoque:', error);
+//     throw error;
+//   }
+// };

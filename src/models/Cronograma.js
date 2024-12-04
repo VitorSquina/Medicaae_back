@@ -17,12 +17,12 @@ export const createCronograma = async (cronogramaData) => {
   }
 };
 
-export const getAllCronogramas = async () => {
+export const getAllCronogramas = async (id_tratamento) => {
   try {
     const query = `
-      SELECT * FROM cronograma;
+      SELECT * FROM cronograma WHERE id_tratamento = $1;
     `;
-    const result = await pool.query(query);
+    const result = await pool.query(query, [id_tratamento]);
     return result.rows;
   } catch (error) {
     console.error('Erro ao buscar cronogramas:', error);

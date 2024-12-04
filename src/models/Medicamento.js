@@ -1,14 +1,14 @@
 import pool from '../../connection.js'; 
 
 export const addMedicamento = async (medicamentoData) => {
-  const { nome, dose, descricao, tipo } = medicamentoData;
+  const { nome, dose, descricao } = medicamentoData;
   try {
     const query = `
-      INSERT INTO medicamento (nome, dose, descricao, tipo)
-      VALUES ($1, $2, $3, $4)
+      INSERT INTO medicamento (nome, dose, descricao)
+      VALUES ($1, $2, $3)
       RETURNING *;
     `;
-    const values = [nome, dose, descricao, tipo];
+    const values = [nome, dose, descricao];
     const result = await pool.query(query, values);
     return result.rows[0];
   } catch (error) {
