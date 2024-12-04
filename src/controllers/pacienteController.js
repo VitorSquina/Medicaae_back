@@ -1,4 +1,4 @@
-import { createPaciente, getAllPacientes, getPacienteById, updatePaciente, deletePaciente } from '../models/Paciente.js';
+import { createPaciente, getAllPacientes, getPacienteById, updatePaciente, deletePaciente, buscarPorNome } from '../models/Paciente.js';
 
 class PacienteController {
   static adicionarPaciente = async (req, res) => {
@@ -21,10 +21,21 @@ class PacienteController {
     }
   };
 
-  static buscarPorNome = async (req, res) => {
+  static getById = async (req, res) => {
     const { id_paciente } = req.params;
     try {
       const Paciente = await getPacienteById(id_paciente);
+      if (!Paciente) return res.status(404).json({ message: 'Paciente não encontrado' });
+      res.status(200).json(Paciente);
+    } catch (error) {
+      res.status(500).json({ error: 'Erro no servidor', details: error.message });
+    }
+  };
+
+  static getByName = async (req, res) => {
+    const { nomePaciente, id_user } = req.body;
+    try {
+      const Paciente = await buscarPorNome(nomePaciente, id_user);
       if (!Paciente) return res.status(404).json({ message: 'Paciente não encontrado' });
       res.status(200).json(Paciente);
     } catch (error) {

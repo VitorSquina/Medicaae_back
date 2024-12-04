@@ -36,12 +36,12 @@ export const getEstoqueByNome = async (nome_medicamento, id_user) => {
       SELECT m.nome, e.idEstoque, e.qtdMedicamento
       FROM estoque e
       JOIN medicamento m ON e.idMed = m.id_med
-      WHERE m.nome ILIKE $1  -- Busca o nome do medicamento (insensível a maiúsculas/minúsculas)
-        AND e.id_user = $2;  -- Verifica o id_user na tabela estoque
+      WHERE m.nome ILIKE $1  
+        AND e.id_user = $2; 
     `;
     
     const result = await pool.query(query, [`%${nome_medicamento}%`, id_user]);
-    return result.rows;  // Retorna todos os resultados encontrados (não apenas o primeiro)
+    return result.rows; 
   } catch (error) {
     console.error('Erro ao buscar estoque pelo nome do medicamento:', error);
     throw error;

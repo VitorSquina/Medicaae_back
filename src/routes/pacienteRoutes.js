@@ -6,8 +6,7 @@ const router = express.Router();
 router.post('/', PacienteController.adicionarPaciente);
 router.get('/', PacienteController.listarPacientes);
 
-router.get('/:id_paciente', PacienteController.buscarPorNome);
+router.get('/nome', PacienteController.getByName);
 router.put('/:id_paciente', PacienteController.atualizarPaciente);
-router.delete('/:id_paciente', PacienteController.deletarPaciente);
 
 export default router;

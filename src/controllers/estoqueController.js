@@ -2,7 +2,7 @@ import { addEstoque, getEstoqueByNome, getAllEstoque, updateQuantidade } from '.
 
 const estoqueController = {
   cadastrarEstoque: async (req, res) => {
-    const { qtdEstoque, idMed, id_user } = req.body;
+    const { qtdMedicamento, idMed, id_user } = req.body;
     try {
       const novoEstoque = await addEstoque({ qtdMedicamento, idMed, id_user });
       res.status(201).json({ message: 'Item adicionado ao estoque com sucesso!', data: novoEstoque });
@@ -15,8 +15,6 @@ const estoqueController = {
     const { nome, id_user } = req.body;
     try {
       const estoque = await getEstoqueByNome(nome, id_user);
-  
-      // Verifique se o estoque foi encontrado (não apenas se o array está vazio)
       if (estoque.length === 0) {
         return res.status(404).json({ message: 'Item não encontrado' });
       }

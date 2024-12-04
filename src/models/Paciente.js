@@ -43,18 +43,30 @@ export const createPaciente = async (cronogramaData) => {
     }
   };
 
-  export const updatePaciente = async (id_paciente, updates) => {
-    const { id_user, nomePaciente, idadePaciente, genero, numContato, cpf, alergia, statusAlta, idtratamento } = updates;
+  export const buscarPorNome = async (nomePaciente,id_user) => {
+    try {
+      const query = `
+      SELECT * FROM paciente WHERE nomePaciente = $1 AND id_user = $2 
+    `;
+    const result = await pool.query(query, [nomePaciente, id_user]);
+    return result.rows[0];
+    } catch (error) {
+      console.error('Erro ao buscar paciente:', error);
+      throw error;
+    }
+  };
+
+  export const updatePaciente = async (idPaciente, updates) => {
+    const { id_user, nomePaciente, idadePaciente, genero, numContato, cpf, alergia, statusAlta } = updates;
     try {
         const query = `
             UPDATE paciente
-            SET id_user = $1, nomePaciente = $2, idadePaciente = $3, genero = $4, numContato = $5, cpf = $6, alergia = $7, statusAlta = $8, idtratamento = $9
-            WHERE idPaciente = $10
+            SET nomePaciente = $2, idadePaciente = $3, genero = $4, numContato = $5, cpf = $6, alergia = $7, statusAlta = $8
+            WHERE idPaciente = $9 AND id_user = $1
             RETURNING *;
         `;
         
-        const values = [id_user, nomePaciente, idadePaciente, genero, numContato, cpf, alergia, statusAlta, idtratamento, id_paciente];
-
+        const values = [id_user, nomePaciente, idadePaciente, genero, numContato, cpf, alergia, statusAlta, idPaciente];
         const result = await pool.query(query, values);
         return result.rows[0];
     } catch (error) {

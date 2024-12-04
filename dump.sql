@@ -41,8 +41,8 @@ CREATE TABLE IF NOT EXISTS estoque (
 );
 CREATE TABLE IF NOT EXISTS tratamento (
   id_tratamento SERIAL PRIMARY KEY,
-  id_paciente INT NOT NULL,  -- Corrigir para INT
-  id_medicamento INT NOT NULL,  -- Corrigir para INT
+  id_paciente INT NOT NULL,
+  id_medicamento INT NOT NULL,  
   nome_paciente VARCHAR(255) NOT NULL,
   dosagem VARCHAR(255) NOT NULL,
   intervalo VARCHAR(255) NOT NULL,
@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS tratamento (
 );
 
 CREATE TABLE IF NOT EXISTS cronograma (
-  id_tratamento INT NOT NULL,  -- Adicionar a definição da coluna
+  id_tratamento INT NOT NULL, 
   id SERIAL PRIMARY KEY,
   id_paciente VARCHAR(255) NOT NULL,
   horario VARCHAR(255) NOT NULL,
