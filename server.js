@@ -25,7 +25,6 @@ app.use('/cronograma', cronogramaRoutes);
 
 app.use('/paciente', pacienteRoutes)
 
-
 app.get('/', (req, res) => {
   res.send('Servidor está rodando!');
 });
