@@ -6,7 +6,6 @@ CREATE TABLE IF NOT EXISTS users (
   password VARCHAR(255) NOT NULL
 );
 
-
 CREATE TABLE IF NOT EXISTS paciente (
   id_user INT NOT NULL,
   idPaciente SERIAL NOT NULL,
@@ -58,7 +57,7 @@ CREATE TABLE IF NOT EXISTS tratamento (
 CREATE TABLE IF NOT EXISTS cronograma (
   id_tratamento INT NOT NULL, 
   id SERIAL PRIMARY KEY,
-  id_paciente VARCHAR(255) NOT NULL,
+  id_paciente INT NOT NULL,
   horario VARCHAR(255) NOT NULL,
   descricao TEXT,
   status VARCHAR(255) NOT NULL,

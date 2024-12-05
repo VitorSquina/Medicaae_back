@@ -1,15 +1,17 @@
 import pool from '../../connection.js';
 
 export const createCronograma = async (cronogramaData) => {
-  const { id_paciente, horario, intervalo, duracao, descricao, status } = cronogramaData;
+  const { id_paciente, id_tratamento, horario, descricao, status } = cronogramaData;
+
   try {
     const query = `
-      INSERT INTO cronograma (id_paciente, horario, intervalo, duracao, descricao, status)
-      VALUES ($1, $2, $3, $4, $5, $6)
+      INSERT INTO cronograma (id_paciente, id_tratamento, horario, descricao, status)
+      VALUES ($1, $2, $3, $4, $5)
       RETURNING *;
     `;
-    const values = [id_paciente, horario, intervalo, duracao, descricao, status];
+    const values = [id_paciente, id_tratamento, horario, descricao, status];
     const result = await pool.query(query, values);
+
     return result.rows[0];
   } catch (error) {
     console.error('Erro ao criar cronograma:', error);
@@ -17,59 +19,55 @@ export const createCronograma = async (cronogramaData) => {
   }
 };
 
-export const getAllCronogramas = async (id_tratamento) => {
+export const getAllCronogramas = async (id_user) => {
   try {
     const query = `
-      SELECT * FROM cronograma WHERE id_tratamento = $1;
+      SELECT c.* 
+      FROM cronograma c
+      JOIN paciente p ON c.id_paciente = p.idPaciente
+      WHERE p.id_user = $1
     `;
-    const result = await pool.query(query, [id_tratamento]);
+    
+    const result = await pool.query(query, [id_user]);
     return result.rows;
   } catch (error) {
-    console.error('Erro ao buscar cronogramas:', error);
+    console.error('Erro ao buscar cronograma', error);
     throw error;
   }
 };
 
-export const getCronogramasByPaciente = async (id_paciente) => {
+export const getCronogramasByStatus = async (status, id_user) => {
   try {
     const query = `
-      SELECT * FROM cronograma WHERE id_paciente = $1;
+      SELECT c.* 
+      FROM cronograma c
+      JOIN paciente p ON c.id_paciente = p.idPaciente
+      WHERE c.status = $1 AND p.id_user = $2
     `;
-    const result = await pool.query(query, [id_paciente]);
+    
+    const result = await pool.query(query, [status, id_user]);
     return result.rows;
   } catch (error) {
-    console.error('Erro ao buscar cronogramas pelo paciente:', error);
+    console.error('Erro ao buscar cronogramas pelo status e id_user:', error);
     throw error;
   }
 };
 
-export const updateCronograma = async (id, updates) => {
-  const { horario, intervalo, duracao, descricao, status } = updates;
+export const alterarStatusCronograma = async (status, id) => {
   try {
     const query = `
       UPDATE cronograma
-      SET horario = $1, intervalo = $2, duracao = $3, descricao = $4, status = $5
-      WHERE id = $6
+      SET status = $1
+      WHERE id = $2
       RETURNING *;
     `;
-    const values = [horario, intervalo, duracao, descricao, status, id];
-    const result = await pool.query(query, values);
-    return result.rows[0];
+    const result = await pool.query(query, [status, id]);
+    if (result.rows.length === 0) {
+      console.warn('Nenhum cronograma encontrado com o ID fornecido.');
+    }
+    return result.rows;
   } catch (error) {
-    console.error('Erro ao atualizar cronograma:', error);
-    throw error;
-  }
-};
-
-export const deleteCronograma = async (id) => {
-  try {
-    const query = `
-      DELETE FROM cronograma WHERE id = $1 RETURNING *;
-    `;
-    const result = await pool.query(query, [id]);
-    return result.rows[0];
-  } catch (error) {
-    console.error('Erro ao remover cronograma:', error);
+    console.error('Erro ao alterar o status do cronograma:', error);
     throw error;
   }
 };

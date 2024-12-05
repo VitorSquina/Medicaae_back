@@ -49,7 +49,7 @@ export const getAllTratamento = async ( id_user) => {
   }
 };
 
-export const updateTratamento = async (id_tratamento, medicamentoNome, dosagem, status, data_inicial, data_final, observacao) => {
+export const updateTratamento = async (id_tratamento, nome, medicamentoNome, dosagem, status, observacao) => {
   try {
     const medicamentoQuery = `
      SELECT id_med
@@ -63,15 +63,34 @@ export const updateTratamento = async (id_tratamento, medicamentoNome, dosagem, 
   
     const query = `
     UPDATE tratamento
-     SET id_medicamento = $1, dosagem = $2, status = $3, data_inicial = $4, data_final = $5, observacao = $6 
-     WHERE id_tratamento = $7 
+     SET id_medicamento = $1, dosagem = $2, status = $3, observacao = $4, nome_paciente = $6 
+     WHERE id_tratamento = $5 
      RETURNING *;`;
-    const values = [id_medicamento,dosagem,status,data_inicial,data_final,observacao,id_tratamento];
+    const values = [id_medicamento,dosagem,status,observacao,id_tratamento, nome];
     const result = await pool.query(query, values);
     return result.rows[0];
   }
   } catch (error) {
     console.error('Erro ao atualizar tratamento:', error);
+    throw error;
+  }
+};
+
+export const alterarStatuTratamento = async (status, id) => {
+  try {
+    const query = `
+      UPDATE tratamento
+      SET status = $1
+      WHERE id_tratamento = $2
+      RETURNING *;
+    `;
+    const result = await pool.query(query, [status, id]);
+    if (result.rows.length === 0) {
+      console.warn('Nenhum tratamento encontrado com o ID fornecido.');
+    }
+    return result.rows;
+  } catch (error) {
+    console.error('Erro ao alterar o status do tratamento:', error);
     throw error;
   }
 };
