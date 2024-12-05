@@ -36,9 +36,9 @@ class TratamentoController {
 
   static updateTratamento = async (req, res) => {
       const { id_tratamento } = req.params;
-      const { medicamento, dosagem, status, data_inicial, data_final, observacao } = req.body;
+      const { nome, medicamento, dosagem, status, observacao } = req.body;
       try{
-        const tratamentos = await updateTratamento(id_tratamento, medicamento, dosagem, status, data_inicial, data_final, observacao)
+        const tratamentos = await updateTratamento(id_tratamento,nome, medicamento, dosagem, status, observacao)
         res.status(200).json(tratamentos);
       }catch (error) {
         res.status(500).json({ error: 'Erro no servidor', details: error.message });

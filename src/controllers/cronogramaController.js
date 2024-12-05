@@ -1,12 +1,12 @@
 import {
-  createCronograma, getAllCronogramas, getCronogramasByPaciente, updateCronograma, deleteCronograma,
-} from '../models/Cronograma.js';
+  createCronograma, getAllCronogramas, getCronogramasByStatus, alterarStatusCronograma } from '../models/Cronograma.js';
 
 class CronogramaController {
   static criarCronograma = async (req, res) => {
-    const { id_paciente, horario, intervalo, duracao, descricao, status } = req.body;
+    const { id_paciente, horario, intervalo, duracao, descricao, status, id_tratamento } = req.body;
     try {
-      const novoCronograma = await createCronograma({ id_paciente, horario, intervalo, duracao, descricao, status });
+      const novoCronograma = await createCronograma({ id_paciente, id_tratamento, horario, intervalo, duracao, descricao, status
+       });
       res.status(201).json({ message: 'Cronograma criado com sucesso!', data: novoCronograma });
     } catch (error) {
       console.error('Erro ao criar cronograma:', error);
@@ -14,10 +14,10 @@ class CronogramaController {
     }
   };
 
-  static listarCronogramas = async (req, res) => { // OK
-    const { id_tratamento, id_user } = req.body
+  static listarCronogramas = async (req, res) => {
+    const { id_user } = req.body
     try {
-      const cronogramas = await getAllCronogramas(id_tratamento);
+      const cronogramas = await getAllCronogramas(id_user);
       res.status(200).json(cronogramas);
     } catch (error) {
       console.error('Erro ao listar cronogramas:', error);
@@ -25,44 +25,29 @@ class CronogramaController {
     }
   }
 
-  static buscarPorPaciente = async (req, res) => {
-    const { id_tratamento, id_user } = req.body;
-
-    try {
-      const cronogramas = await getCronogramasByPaciente(paciente.id_paciente);
-      res.status(200).json(cronogramas);
-    } catch (error) {
-      console.error('Erro ao buscar cronogramas:', error);
-      res.status(500).json({ error: 'Erro no servidor', details: error.message });
+  static getCronogramaStatus = async (req, res) => {
+    const { status, id_user } = req.body;
+      try {
+        const tratamentos = await getCronogramasByStatus(status, id_user);
+        res.status(200).json(tratamentos);
+      } catch (error) {
+        console.error('Erro ao buscar tratamentos pelo status:', error);
+        res.status(500).json({ error: 'Erro no servidor', details: error.message });
+      }
     }
-  };
-
-  static atualizarCronograma = async (req, res) => {
-    const { id } = req.params;
-    const updates = req.body;
-    try {
-      const cronogramaAtualizado = await updateCronograma(id, updates);
-      if (!cronogramaAtualizado) return res.status(404).json({ message: 'Cronograma não encontrado' });
-
-      res.status(200).json({ message: 'Cronograma atualizado com sucesso!', data: cronogramaAtualizado });
-    } catch (error) {
-      console.error('Erro ao atualizar cronograma:', error);
-      res.status(500).json({ error: 'Erro no servidor', details: error.message });
-    }
-  };
-
-  static deletarCronograma = async (req, res) => {
-    const { id } = req.params;
-    try {
-      const cronogramaRemovido = await deleteCronograma(id);
-      if (!cronogramaRemovido) return res.status(404).json({ message: 'Cronograma não encontrado' });
-
-      res.status(200).json({ message: 'Cronograma removido com sucesso!', data: cronogramaRemovido });
-    } catch (error) {
-      console.error('Erro ao deletar cronograma:', error);
-      res.status(500).json({ error: 'Erro no servidor', details: error.message });
-    }
-  };
-}
+    
+    static alterarStatusCronogramaController = async (req, res) => {
+      const { id, newStatus } = req.body;  // Recebe os parâmetros da requisição
+      
+      try {
+        // Chama a função para alterar o status
+        const tratamentos = await alterarStatusCronograma(newStatus, id);
+        res.status(200).json(tratamentos);  // Retorna os dados atualizados
+      } catch (error) {
+        console.error('Erro ao buscar tratamentos pelo status:', error);
+        res.status(500).json({ error: 'Erro no servidor', details: error.message });
+      }
+    };
+  }
 
 export default CronogramaController;
