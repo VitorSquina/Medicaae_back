@@ -1,4 +1,4 @@
-import { createTratamento, getTratamentosByStatus, getAllTratamento, updateTratamento} from '../models/Tratamento.js';
+import { createTratamento, getTratamentosByStatus, getAllTratamento, updateTratamento, alterarStatuTratamento} from '../models/Tratamento.js';
 
 class TratamentoController {
 
@@ -44,6 +44,17 @@ class TratamentoController {
         res.status(500).json({ error: 'Erro no servidor', details: error.message });
       }
   }
+
+  static alterarStatustratamentoController = async (req, res) => {
+    const { id, newStatus } = req.body;    
+    try {
+      const tratamentos = await alterarStatuTratamento(newStatus, id);
+      res.status(200).json(tratamentos); 
+    } catch (error) {
+      console.error('Erro ao buscar tratamentos pelo status:', error);
+      res.status(500).json({ error: 'Erro no servidor', details: error.message });
+    }
+  };
 }
 
 

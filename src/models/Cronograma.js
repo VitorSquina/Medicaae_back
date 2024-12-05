@@ -55,25 +55,16 @@ export const getCronogramasByStatus = async (status, id_user) => {
 
 export const alterarStatusCronograma = async (status, id) => {
   try {
-    // Log para depuração
-    console.log('Atualizando o status:', status, 'para o cronograma com ID:', id);
-
     const query = `
       UPDATE cronograma
       SET status = $1
       WHERE id = $2
       RETURNING *;
     `;
-    
-    // Executa a query para atualizar o status
     const result = await pool.query(query, [status, id]);
-
-    console.log('Resultado da query:', result.rows);  // Log de resposta
-
     if (result.rows.length === 0) {
       console.warn('Nenhum cronograma encontrado com o ID fornecido.');
     }
-
     return result.rows;
   } catch (error) {
     console.error('Erro ao alterar o status do cronograma:', error);

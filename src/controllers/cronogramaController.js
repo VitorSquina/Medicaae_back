@@ -28,26 +28,26 @@ class CronogramaController {
   static getCronogramaStatus = async (req, res) => {
     const { status, id_user } = req.body;
       try {
-        const tratamentos = await getCronogramasByStatus(status, id_user);
-        res.status(200).json(tratamentos);
+        const cronograma = await getCronogramasByStatus(status, id_user);
+        res.status(200).json(cronograma);
       } catch (error) {
-        console.error('Erro ao buscar tratamentos pelo status:', error);
+        console.error('Erro ao buscar cronograma pelo status:', error);
         res.status(500).json({ error: 'Erro no servidor', details: error.message });
       }
     }
     
     static alterarStatusCronogramaController = async (req, res) => {
-      const { id, newStatus } = req.body;  // Recebe os parâmetros da requisição
-      
+      const { id, newStatus } = req.body;    
       try {
-        // Chama a função para alterar o status
-        const tratamentos = await alterarStatusCronograma(newStatus, id);
-        res.status(200).json(tratamentos);  // Retorna os dados atualizados
+        const cronograma = await alterarStatusCronograma(newStatus, id);
+        res.status(200).json(cronograma); 
       } catch (error) {
-        console.error('Erro ao buscar tratamentos pelo status:', error);
+        console.error('Erro ao buscar cronograma pelo status:', error);
         res.status(500).json({ error: 'Erro no servidor', details: error.message });
       }
     };
   }
+
+  
 
 export default CronogramaController;

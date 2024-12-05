@@ -75,3 +75,22 @@ export const updateTratamento = async (id_tratamento, nome, medicamentoNome, dos
     throw error;
   }
 };
+
+export const alterarStatuTratamento = async (status, id) => {
+  try {
+    const query = `
+      UPDATE tratamento
+      SET status = $1
+      WHERE id_tratamento = $2
+      RETURNING *;
+    `;
+    const result = await pool.query(query, [status, id]);
+    if (result.rows.length === 0) {
+      console.warn('Nenhum tratamento encontrado com o ID fornecido.');
+    }
+    return result.rows;
+  } catch (error) {
+    console.error('Erro ao alterar o status do tratamento:', error);
+    throw error;
+  }
+};
